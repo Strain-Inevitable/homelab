@@ -1,0 +1,14 @@
+# Terraform state and local plans (contain sensitive metadata)
+.terraform/
+*.tfstate
+*.tfstate.*
+*.lock.hcl
+plan
+
+# Secret variable files
+*.tfvars
+*.auto.tfvars
+secret*.yaml
+
+# Environments
+.env
