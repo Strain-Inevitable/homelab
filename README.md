@@ -1,5 +1,7 @@
 # homelab
-.
+
+```text
+homelab/
 ├── apps
 │   ├── cert-manager
 │   │   ├── cert-manager.tf
@@ -56,3 +58,4 @@
         ├── config.tf
         ├── providers.tf -> ../../providers.tf
         └── terraform.tfstate
+```
