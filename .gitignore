@@ -12,3 +12,8 @@ secret*.yaml
 
 # Environments
 .env
+
+# Talos OS config
+talosconfig
+controlplane.yaml
+worker.yaml
