@@ -4,6 +4,7 @@
 *.tfstate.*
 *.lock.hcl
 plan
+tfplan
 
 # Secret variable files
 *.tfvars
@@ -12,6 +13,7 @@ secret*.yaml
 
 # Environments
 .env
+*.snapshot
 
 # Talos OS config
 talosconfig
