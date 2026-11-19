@@ -354,7 +354,7 @@ tailscale configure kubeconfig tailscale-operator
 <summary>Network Perimeter Hardening</summary>
 
 1 - Reserve static DHCP leases on your router for your desktop workstation, Proxmox host, and Talos nodes (the same ones you currently have - just make them permanent)  
-2 - Go to your Proxmox Datacenter -> Firewall -> IPSet
+2 - Go to your Proxmox Datacenter -> Firewall -> IPSet 
 	- Create a new IPSet and name it something like 'trusted_k8s' or something that makes sense to you.
 	- Add each of your node IPs
 	- Add your desktop workstation IP
@@ -363,26 +363,25 @@ tailscale configure kubeconfig tailscale-operator
 > [!IMPORTANT]
 > Do this step BEFORE turning your firewall on!
 
-3 - Go to your Proxmox Datacenter -> Firewall
+3 - Go to your Proxmox Datacenter -> Firewall 
 	- Add Rule: Direction: in | Action: ACCEPT | Source: +trusted_k8s | Protocol: tcp | Dest. port: 8006,22
 	  *Note*: The + in front of your IPSet's name is very important
-4 - Go to your Proxmox Datacenter -> Firewall
+4 - Go to your Proxmox Datacenter -> Firewall 
 	- Options: Firewall: Yes | Input Policy: DROP | Output Policy: ACCEPT
-5 - Go to your Proxmox Datacenter -> Firewall -> Security Group
+5 - Go to your Proxmox Datacenter -> Firewall -> Security Group 
 	- Create a new security group and name it something like 'k8s_nodes' or something that makes sense to you.
 	- Rule 0: Direction: in | Action: ACCEPT | Protocol: udp | Dest. port: 67:68 | Comment: Allow DHCP
 	- Rule 1: Direction: in | Action: ACCEPT | Source: +dc/trusted_k8s
-6 - Go to each of your Talos VMs -> Firewall
+6 - Go to each of your Talos VMs -> Firewall 
 	- Insert: Security Group -> k8s_nodes and ensure that it is enabled.
 	- Options: Firewall: Yes | DHCP: Yes | NDP: Yes | MAC filter: Yes | Input Policy: DROP | Output Policy: ACCEPT
-7 - Verify Perimeter Enforcement
+7 - Verify Perimeter Enforcement 
 	- From somewhere *not* on your LAN with Tailscale OFF: kubectl should time out
 	- From somewhere *not* on your LAN with Tailscale ON: kubectl should work
 	- From untrusted host on your LAN: ping your control plane and you should get 100% packet loss
 </details>
 <details>
-<summary>Secrets!</summary>
-
+<summary>Secrets!</summary> 
 
 > [!NOTE]
 > **TODO:** Elaborate on deploying Vault
