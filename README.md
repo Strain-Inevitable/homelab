@@ -133,33 +133,33 @@ sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 kubectl version
 ```
 #### HashiCorp Terraform
-    <details>
-    <summary>Debian/Ubuntu</summary>
+<details>
+<summary>Debian/Ubuntu</summary>
 
-    ```shell
-    wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-    sudo apt update && sudo apt install terraform
-    ```
-    </details>
-    <details>
-    <summary>CentOS/RHEL</summary>
+```shell
+wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt update && sudo apt install terraform
+```
+</details>
+<details>
+<summary>CentOS/RHEL</summary>
 
-    ```shell
-    sudo yum install -y yum-utils
-    sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
-    sudo yum -y install terraform
-    ```
-    </details>
-    <details>
-    <summary>Fedora</summary>
+```shell
+sudo yum install -y yum-utils
+sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+sudo yum -y install terraform
+```
+</details>
+<details>
+<summary>Fedora</summary>
 
-    ```shell
-    wget -O- https://rpm.releases.hashicorp.com/fedora/hashicorp.repo | sudo tee /etc/yum.repos.d/hashicorp.repo
-    sudo yum list available | grep hashicorp
-    sudo dnf -y install terraform
-    ```
-    </details>
+```shell
+wget -O- https://rpm.releases.hashicorp.com/fedora/hashicorp.repo | sudo tee /etc/yum.repos.d/hashicorp.repo
+sudo yum list available | grep hashicorp
+sudo dnf -y install terraform
+```
+</details>
 </details>
 
 ### Preparing the repo
@@ -265,12 +265,14 @@ talosctl get securitystate -n <node-ip>
 talosctl get volumestatus STATE -n <node-ip> -o yaml
 talosctl get volumestatus EPHEMERAL -n <node-ip> -o yaml
 ```
+
 > [!IMPORTANT]
 > On every node:
 > 	SECUREBOOT: true
 > 	encryptionProvider: luks2
 > 	pcrs: [7]
 > 	pubKeyPcrs: [11]
+
 </details>
 
 > [!NOTE]
@@ -350,14 +352,16 @@ tailscale configure kubeconfig tailscale-operator
 <details>
 <summary>Network Perimeter Hardening</summary>
 
-1 - Reserve static DHCP leases on your router for your desktop workstation, Proxmox host, and Talos nodes (the same ones you currently have - just make them permanent)
+1 - Reserve static DHCP leases on your router for your desktop workstation, Proxmox host, and Talos nodes (the same ones you currently have - just make them permanent)  
 2 - Go to your Proxmox Datacenter -> Firewall -> IPSet
 	- Create a new IPSet and name it something like 'trusted_k8s' or something that makes sense to you.
 	- Add each of your node IPs
 	- Add your desktop workstation IP
 	- Add the Tailscale CGNAT Subnet (100.64.0.0/10)
+
 > [!IMPORTANT]
 > Do this step BEFORE turning your firewall on!
+
 3 - Go to your Proxmox Datacenter -> Firewall
 	- Add Rule: Direction: in | Action: ACCEPT | Source: +trusted_k8s | Protocol: tcp | Dest. port: 8006,22
 	  *Note*: The + in front of your IPSet's name is very important
@@ -380,6 +384,7 @@ tailscale configure kubeconfig tailscale-operator
 
 > [!NOTE]
 > **TODO:** Elaborate on deploying Vault
+
 - Deploy Vault using terraform under homelab/apps/vault and Vault's config under homelab/infrastructure/vault-config
 ```shell
 kubectl exec -it -n vault vault-0 -- vault operator init
@@ -396,8 +401,10 @@ terraform -chdir=../../infrastructure/vault-config apply
 kubectl exec -it -n vault vault-0 -- \
 > env VAULT_TOKEN="<initial-root-token>" vault token revoke -self
 ```
+
 > [!IMPORTANT]
 > It is normally not a good idea to get used to having your tokens show up in your local history or be sent this way, however in this case you are destroying the token, and it will never be used against you.
+
 </details>
 
 > [!NOTE]
@@ -409,7 +416,7 @@ kubectl exec -it -n vault vault-0 -- \
 
 ### The Fourth C: Code
 
-> [~NOTE]
+> [!NOTE]
 > **TODO:** Update the tree
 
 ```console
