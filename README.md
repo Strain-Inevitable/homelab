@@ -266,6 +266,7 @@ talosctl get volumestatus STATE -n <node-ip> -o yaml
 talosctl get volumestatus EPHEMERAL -n <node-ip> -o yaml
 ```
 
+
 > [!IMPORTANT]
 > On every node:
 > 	SECUREBOOT: true
@@ -382,6 +383,7 @@ tailscale configure kubeconfig tailscale-operator
 <details>
 <summary>Secrets!</summary>
 
+
 > [!NOTE]
 > **TODO:** Elaborate on deploying Vault
 
@@ -401,6 +403,7 @@ terraform -chdir=../../infrastructure/vault-config apply
 kubectl exec -it -n vault vault-0 -- \
 > env VAULT_TOKEN="<initial-root-token>" vault token revoke -self
 ```
+
 
 > [!IMPORTANT]
 > It is normally not a good idea to get used to having your tokens show up in your local history or be sent this way, however in this case you are destroying the token, and it will never be used against you.
