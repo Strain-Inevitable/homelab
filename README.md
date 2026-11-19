@@ -265,15 +265,6 @@ talosctl get securitystate -n <node-ip>
 talosctl get volumestatus STATE -n <node-ip> -o yaml
 talosctl get volumestatus EPHEMERAL -n <node-ip> -o yaml
 ```
-
-
-> [!IMPORTANT]
-> On every node:
-> 	SECUREBOOT: true
-> 	encryptionProvider: luks2
-> 	pcrs: [7]
-> 	pubKeyPcrs: [11]
-
 </details>
 
 > [!NOTE]
@@ -350,6 +341,9 @@ terraform apply plan
 tailscale configure kubeconfig tailscale-operator
 ```
 </details>
+> [!IMPORTANT]
+> Do this step BEFORE turning your firewall on!
+
 <details>
 <summary>Network Perimeter Hardening</summary>
 
@@ -359,10 +353,6 @@ tailscale configure kubeconfig tailscale-operator
 	- Add each of your node IPs  
 	- Add your desktop workstation IP  
 	- Add the Tailscale CGNAT Subnet (100.64.0.0/10)  
-
-> [!IMPORTANT]
-> Do this step BEFORE turning your firewall on!
-
 3 - Go to your Proxmox Datacenter -> Firewall  
 	- Add Rule: Direction: in | Action: ACCEPT | Source: +trusted_k8s | Protocol: tcp | Dest. port: 8006,22  
 	  *Note*: The + in front of your IPSet's name is very important  
@@ -380,11 +370,12 @@ tailscale configure kubeconfig tailscale-operator
 	- From somewhere *not* on your LAN with Tailscale ON: kubectl should work  
 	- From untrusted host on your LAN: ping your control plane and you should get 100% packet loss  
 </details>
-<details>
-<summary>Secrets!</summary> 
 
 > [!NOTE]
 > **TODO:** Elaborate on deploying Vault
+
+<details>
+<summary>Secrets!</summary> 
 
 - Deploy Vault using terraform under homelab/apps/vault and Vault's config under homelab/infrastructure/vault-config
 ```shell
@@ -402,11 +393,6 @@ terraform -chdir=../../infrastructure/vault-config apply
 kubectl exec -it -n vault vault-0 -- \
 > env VAULT_TOKEN="<initial-root-token>" vault token revoke -self
 ```
-
-
-> [!IMPORTANT]
-> It is normally not a good idea to get used to having your tokens show up in your local history or be sent this way, however in this case you are destroying the token, and it will never be used against you.
-
 </details>
 
 > [!NOTE]
